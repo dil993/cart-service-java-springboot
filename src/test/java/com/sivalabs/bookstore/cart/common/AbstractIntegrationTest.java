@@ -54,14 +54,10 @@ public abstract class AbstractIntegrationTest {
         mockServerClient = new MockServerClient(mockServer.getHost(), mockServer.getServerPort());
     }
 
-    protected static void mockGetProductByIsbn(
-            String productCode,
-            String name,
-            BigDecimal price,
-            BigDecimal discount,
-            BigDecimal salePrice) {
+    protected static void mockGetProductByCode(
+            String code, String name, BigDecimal price, BigDecimal discount, BigDecimal salePrice) {
         mockServerClient
-                .when(request().withMethod("GET").withPath("/api/products/" + productCode))
+                .when(request().withMethod("GET").withPath("/api/products/" + code))
                 .respond(
                         response()
                                 .withStatusCode(200)
@@ -72,7 +68,7 @@ public abstract class AbstractIntegrationTest {
                                         json(
                                                 """
                                             {
-                                                "productCode": "%s",
+                                                "code": "%s",
                                                 "name": "%s",
                                                 "price": %f,
                                                 "discount": %f,
@@ -80,7 +76,7 @@ public abstract class AbstractIntegrationTest {
                                             }
                                         """
                                                         .formatted(
-                                                                productCode,
+                                                                code,
                                                                 name,
                                                                 price.doubleValue(),
                                                                 discount.doubleValue(),

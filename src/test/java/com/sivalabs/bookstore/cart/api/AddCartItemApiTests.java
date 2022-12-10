@@ -22,12 +22,12 @@ class AddCartItemApiTests extends AbstractIntegrationTest {
 
     @Test
     void shouldAddItemToNewCart() {
-        mockGetProductByIsbn("P100", "Product 1", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO);
+        mockGetProductByCode("P100", "Product 1", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO);
         given().contentType(ContentType.JSON)
                 .body(
                         """
                         {
-                            "productCode": "P100",
+                            "code": "P100",
                             "quantity": 2
                         }
                         """)
@@ -41,14 +41,14 @@ class AddCartItemApiTests extends AbstractIntegrationTest {
 
     @Test
     void shouldAddItemToExistingCart() {
-        mockGetProductByIsbn("P100", "Product 1", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO);
+        mockGetProductByCode("P100", "Product 1", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO);
         String cartId = UUID.randomUUID().toString();
         cartRepository.save(new Cart(cartId, Set.of()));
         given().contentType(ContentType.JSON)
                 .body(
                         """
                         {
-                            "productCode": "P100",
+                            "code": "P100",
                             "quantity": 2
                         }
                         """)
@@ -58,7 +58,7 @@ class AddCartItemApiTests extends AbstractIntegrationTest {
                 .statusCode(200)
                 .body("id", is(cartId))
                 .body("items", hasSize(1))
-                .body("items[0].productCode", is("P100"))
+                .body("items[0].code", is("P100"))
                 .body("items[0].quantity", is(2));
     }
 
@@ -68,7 +68,7 @@ class AddCartItemApiTests extends AbstractIntegrationTest {
                 .body(
                         """
                         {
-                            "productCode": "P100",
+                            "code": "P100",
                             "quantity": 2
                         }
                         """)
@@ -84,7 +84,7 @@ class AddCartItemApiTests extends AbstractIntegrationTest {
                 .body(
                         """
                         {
-                            "productCode": "non-existing-product-id",
+                            "code": "non-existing-product-id",
                             "quantity": 2
                         }
                         """)
@@ -96,7 +96,7 @@ class AddCartItemApiTests extends AbstractIntegrationTest {
 
     @Test
     void shouldAddItemIncreaseQuantityWhenAddingSameProduct() {
-        mockGetProductByIsbn("P100", "Product 1", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO);
+        mockGetProductByCode("P100", "Product 1", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO);
         String cartId = UUID.randomUUID().toString();
         cartRepository.save(
                 new Cart(
@@ -106,7 +106,7 @@ class AddCartItemApiTests extends AbstractIntegrationTest {
                 .body(
                         """
                         {
-                            "productCode": "P100",
+                            "code": "P100",
                             "quantity": 1
                         }
                         """)
@@ -116,13 +116,13 @@ class AddCartItemApiTests extends AbstractIntegrationTest {
                 .statusCode(200)
                 .body("id", is(cartId))
                 .body("items", hasSize(1))
-                .body("items[0].productCode", is("P100"))
+                .body("items[0].code", is("P100"))
                 .body("items[0].quantity", is(3));
     }
 
     @Test
     void shouldAddDifferentProduct() {
-        mockGetProductByIsbn("P101", "Product 2", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO);
+        mockGetProductByCode("P101", "Product 2", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO);
         String cartId = UUID.randomUUID().toString();
         cartRepository.save(
                 new Cart(
@@ -132,7 +132,7 @@ class AddCartItemApiTests extends AbstractIntegrationTest {
                 .body(
                         """
                         {
-                            "productCode": "P101",
+                            "code": "P101",
                             "quantity": 1
                         }
                         """)

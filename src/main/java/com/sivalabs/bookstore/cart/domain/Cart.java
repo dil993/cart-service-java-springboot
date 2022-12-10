@@ -31,7 +31,7 @@ public class Cart {
 
     public void addItem(CartItem item) {
         for (CartItem cartItem : items) {
-            if (cartItem.getProductCode().equals(item.getProductCode())) {
+            if (cartItem.getCode().equals(item.getCode())) {
                 cartItem.setQuantity(cartItem.getQuantity() + 1);
                 return;
             }
@@ -39,18 +39,18 @@ public class Cart {
         this.items.add(item);
     }
 
-    public void updateItemQuantity(String productCode, int quantity) {
+    public void updateItemQuantity(String code, int quantity) {
         for (CartItem cartItem : items) {
-            if (cartItem.getProductCode().equals(productCode)) {
+            if (cartItem.getCode().equals(code)) {
                 cartItem.setQuantity(quantity);
             }
         }
     }
 
-    public void removeItem(String productCode) {
+    public void removeItem(String code) {
         CartItem item = null;
         for (CartItem cartItem : items) {
-            if (cartItem.getProductCode().equals(productCode)) {
+            if (cartItem.getCode().equals(code)) {
                 item = cartItem;
                 break;
             }

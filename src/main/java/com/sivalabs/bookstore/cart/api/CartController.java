@@ -44,11 +44,10 @@ public class CartController {
         return cartService.updateCartItemQuantity(cartId, cartItemRequest);
     }
 
-    @DeleteMapping(value = "/items/{productCode}")
+    @DeleteMapping(value = "/items/{code}")
     public Cart removeCartItem(
-            @RequestParam(name = "cartId") String cartId,
-            @PathVariable("productCode") String productCode) {
-        return cartService.removeCartItem(cartId, productCode);
+            @RequestParam(name = "cartId") String cartId, @PathVariable("code") String code) {
+        return cartService.removeCartItem(cartId, code);
     }
 
     @DeleteMapping

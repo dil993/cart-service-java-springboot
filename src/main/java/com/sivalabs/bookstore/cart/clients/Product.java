@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Product {
     private String id;
-    private String productCode;
+    private String code;
     private String name;
     private String description;
     private String imageUrl;

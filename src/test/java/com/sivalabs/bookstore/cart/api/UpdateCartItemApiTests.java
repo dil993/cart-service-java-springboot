@@ -21,7 +21,7 @@ class UpdateCartItemApiTests extends AbstractIntegrationTest {
 
     @Test
     void shouldUpdateItemQuantity() {
-        mockGetProductByIsbn("P100", "Product 1", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO);
+        mockGetProductByCode("P100", "Product 1", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO);
 
         String cartId = UUID.randomUUID().toString();
         cartRepository.save(
@@ -32,7 +32,7 @@ class UpdateCartItemApiTests extends AbstractIntegrationTest {
                 .body(
                         """
                         {
-                            "productCode": "P100",
+                            "code": "P100",
                             "quantity": 4
                         }
                         """)
@@ -42,7 +42,7 @@ class UpdateCartItemApiTests extends AbstractIntegrationTest {
                 .statusCode(200)
                 .body("id", is(cartId))
                 .body("items", hasSize(1))
-                .body("items[0].productCode", is("P100"))
+                .body("items[0].code", is("P100"))
                 .body("items[0].quantity", is(4));
     }
 
@@ -57,7 +57,7 @@ class UpdateCartItemApiTests extends AbstractIntegrationTest {
                 .body(
                         """
                         {
-                            "productCode": "P100",
+                            "code": "P100",
                             "quantity": 0
                         }
                         """)

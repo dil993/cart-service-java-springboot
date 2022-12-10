@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class CartItemRequestDTO {
-    @NotEmpty private String productCode;
+    @NotEmpty private String code;
 
     @Min(0)
     private int quantity;

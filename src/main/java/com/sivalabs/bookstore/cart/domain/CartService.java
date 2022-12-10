@@ -35,17 +35,14 @@ public class CartService {
                             .findById(cartId)
                             .orElseThrow(() -> new CartNotFoundException(cartId));
         }
-        log.info("Add productCode: {} to cart", cartItemRequest.getProductCode());
+        log.info("Add code: {} to cart", cartItemRequest.getCode());
         Product product =
                 productServiceClient
-                        .getProductByCode(cartItemRequest.getProductCode())
-                        .orElseThrow(
-                                () ->
-                                        new ProductNotFoundException(
-                                                cartItemRequest.getProductCode()));
+                        .getProductByCode(cartItemRequest.getCode())
+                        .orElseThrow(() -> new ProductNotFoundException(cartItemRequest.getCode()));
         CartItem cartItem =
                 new CartItem(
-                        product.getProductCode(),
+                        product.getCode(),
                         product.getName(),
                         product.getDescription(),
                         product.getPrice(),
@@ -60,33 +57,31 @@ public class CartService {
                         .findById(cartId)
                         .orElseThrow(() -> new CartNotFoundException(cartId));
         log.info(
-                "Update quantity: {} for productCode:{} quantity in cart: {}",
+                "Update quantity: {} for code:{} quantity in cart: {}",
                 cartItemRequest.getQuantity(),
-                cartItemRequest.getProductCode(),
+                cartItemRequest.getCode(),
                 cartId);
 
         if (cartItemRequest.getQuantity() <= 0) {
-            cart.removeItem(cartItemRequest.getProductCode());
+            cart.removeItem(cartItemRequest.getCode());
         } else {
             Product product =
                     productServiceClient
-                            .getProductByCode(cartItemRequest.getProductCode())
+                            .getProductByCode(cartItemRequest.getCode())
                             .orElseThrow(
-                                    () ->
-                                            new ProductNotFoundException(
-                                                    cartItemRequest.getProductCode()));
-            cart.updateItemQuantity(product.getProductCode(), cartItemRequest.getQuantity());
+                                    () -> new ProductNotFoundException(cartItemRequest.getCode()));
+            cart.updateItemQuantity(product.getCode(), cartItemRequest.getQuantity());
         }
         return cartRepository.save(cart);
     }
 
-    public Cart removeCartItem(String cartId, String productCode) {
+    public Cart removeCartItem(String cartId, String code) {
         Cart cart =
                 cartRepository
                         .findById(cartId)
                         .orElseThrow(() -> new CartNotFoundException(cartId));
-        log.info("Remove cart line item productCode: {}", productCode);
-        cart.removeItem(productCode);
+        log.info("Remove cart line item code: {}", code);
+        cart.removeItem(code);
         return cartRepository.save(cart);
     }
 
