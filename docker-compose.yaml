@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  redis:
+    image: redis:7.0.5-alpine
+    container_name: bookstore-redis
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    restart: unless-stopped
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: bookstore-redis-commander
+    hostname: bookstore-redis-commander
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:bookstore-redis:6379
+    ports:
+      - "9081:8081"
